@@ -1,9 +1,9 @@
-import 'dart:convert';
+import 'package:apitest/Model/usermodel.dart';
+import 'package:apitest/Service/apiservice.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -11,53 +11,65 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  List <dynamic> users = [];
+  List <UserModel> users = [];
+
+  @override
+  void initState(){
+    super.initState();
+    fetchUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text('Rest API Calls'),
+        title: const Text('Rest API Calls'),
       ),
 
-      body: ListView.builder(
+      body: users.isEmpty
+        ? const Center(
+          child: CircularProgressIndicator()
+        )
+        : ListView.builder(
         itemCount: users.length,
         itemBuilder: (context, index){
           final user = users[index];
-          final name = user['name']['first'];
-          final email = user['email'];
-          final imageUrl = user['picture']['thumbnail'];
+          return Card(
+            child: ListTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              title: Text(user.fullName),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-          return ListTile(
-          leading: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Image.network(imageUrl)
-          ),
-          title: Text(name.toString()),
-          subtitle: Text(email),
-        );
+                  Text("Email: ${user.email}"),
+                  Text("Phone: ${user.phone}"),
+                  Text("Address: ${user.fullAddress}"),
+                  Text("Age: ${user.dob.age}"),
+                  Text("Date of Birth: ${user.fullDOB}"),
+
+
+                ],
+              )
+            //tileColor: color,
+                    ),
+          );
       }),
-      
-      floatingActionButton: FloatingActionButton(
-        onPressed: fetchUsers,
-      ),
-
     );
   }
 
-  void fetchUsers() async {
-    print("fetch Users Called");
-    const url = "https://randomuser.me/api/?results=100";
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
-    setState(() {
-      users = json['results'];
-    });
-    print('fetchUsers Completed');
+  Future <void> fetchUsers() async {
+    try{
+      final response = await UserAPI.fetchUsers();
+      setState(() {
+        users = response;
+      });
+    } catch(e) {
+      print('Error fetching users: $e');
+    }
   }
-
 }
 
