@@ -1,4 +1,5 @@
 import 'package:apitest/Model/usermodel.dart';
+import 'package:apitest/Screens/userdetails.dart';
 import 'package:apitest/Service/apiservice.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text('Rest API Calls'),
+        title: const Text('Random People'),
       ),
 
       body: users.isEmpty
@@ -35,27 +36,31 @@ class _HomePageState extends State<HomePage> {
         itemCount: users.length,
         itemBuilder: (context, index){
           final user = users[index];
-          return Card(
-            child: ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              title: Text(user.fullName),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Text("Email: ${user.email}"),
-                  Text("Phone: ${user.phone}"),
-                  Text("Address: ${user.fullAddress}"),
-                  Text("Age: ${user.dob.age}"),
-                  Text("Date of Birth: ${user.fullDOB}"),
-
-
-                ],
-              )
-            //tileColor: color,
-                    ),
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserDetails(user: user),
+                  ),
+              );
+            },
+            child: Card(
+              child: ListTile(
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.network(
+                    user.pic.thumbnail,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                title: Text(user.fullName),
+                subtitle: Text(user.email)
+              //tileColor: color,
+                      ),
+            ),
           );
       }),
     );

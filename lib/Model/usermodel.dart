@@ -7,6 +7,7 @@ class UserModel{
   final UserName name;
   final UserDOB dob;
   final UserLoc loc;
+  final UserPic pic;
 
   UserModel({
       required this.email,
@@ -17,11 +18,12 @@ class UserModel{
       required this.name,
       required this.dob,
       required this.loc,
+      required this.pic,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> e) {
 
-    ///username
+    ///fullname
 
     final name = UserName(
       title: e['name']['title'],
@@ -63,6 +65,14 @@ class UserModel{
       street: street,
     );
 
+    /// Profile Picture
+
+    final pic = UserPic(
+      large: e['picture']['large'],
+      medium: e['picture']['medium'],
+      thumbnail: e['picture']['thumbnail'],
+    );
+
 
     return UserModel(
       cell: e['cell'],
@@ -73,6 +83,7 @@ class UserModel{
       name: name,
       dob: dob,
       loc: loc,
+      pic: pic,
     );
   }
 
@@ -110,6 +121,19 @@ class UserDOB{
     required this.age
   });
 }
+
+class UserPic {
+  final String large;
+  final String medium;
+  final String thumbnail;
+
+  UserPic({
+    required this.large,
+    required this.medium,
+    required this.thumbnail,
+  });
+}
+
 
 class UserLoc{
   final String city;
@@ -161,3 +185,5 @@ class LocationStreet{
     required this.name
   });
 }
+
+
