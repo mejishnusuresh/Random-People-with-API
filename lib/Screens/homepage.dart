@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  title: Text(user.fullName),
+                  title: Text(user.fullName,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                   subtitle: Text(user.email)
                 //tileColor: color,
                         ),

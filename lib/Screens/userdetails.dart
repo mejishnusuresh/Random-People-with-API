@@ -1,9 +1,10 @@
 import 'package:apitest/Model/usermodel.dart';
+import 'package:apitest/Screens/userpicview.dart';
 import 'package:flutter/material.dart';
 class UserDetails extends StatelessWidget {
   final UserModel user;
 
-  const UserDetails({Key? key, required this.user}) : super(key: key);
+  const UserDetails({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +20,22 @@ class UserDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    ClipRRect(
-                      child: Image.network(
-                        user.pic.large,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPicView(user: user),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        child: Image.network(
+                          user.pic.medium,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox( width: 8,),
