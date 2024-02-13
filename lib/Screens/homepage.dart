@@ -46,20 +46,23 @@ class _HomePageState extends State<HomePage> {
               );
             },
             child: Card(
-              child: ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.network(
-                    user.pic.thumbnail,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.network(
+                      user.pic.thumbnail,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                title: Text(user.fullName),
-                subtitle: Text(user.email)
-              //tileColor: color,
-                      ),
+                  title: Text(user.fullName),
+                  subtitle: Text(user.email)
+                //tileColor: color,
+                        ),
+              ),
             ),
           );
       }),
